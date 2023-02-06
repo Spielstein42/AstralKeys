@@ -673,7 +673,16 @@ local function TooltipHook(self)
 	end
 end
 
-TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, TooltipHook)
+TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip, ...)
+
+    -- check if called tooltip is blizz's game tooltip and not a third party copy
+    if tooltip ~= _G.GameTooltip then
+        return
+    end
+
+
+    TooltipHook(tooltip, ...)
+end)
 
 local function FriendUnitFunction(self, unit, class, mapID, keyLevel, weekly_best, faction, btag)
 	self.unitID = addon.UnitID(unit)
